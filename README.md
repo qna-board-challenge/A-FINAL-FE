@@ -23,6 +23,7 @@
 
 ## **3. src 폴더 구조**
 
+```
 src/
 ├── app/                   # 페이지 및 레이아웃 구성
 │   ├── layout.tsx         # 전체 앱 공통 레이아웃
@@ -48,3 +49,4 @@ src/
 │   └── routes.ts
 └── types/                 # TypeScript 타입 정의
     └── user.d.ts
+```
