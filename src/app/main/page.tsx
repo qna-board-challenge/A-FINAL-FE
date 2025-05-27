@@ -1,3 +1,9 @@
+import Question from "@/components/Question";
+
 export default function Main() {
-  return <div>질문글</div>;
+  return (
+    <div>
+      <Question />
+    </div>
+  );
 }
