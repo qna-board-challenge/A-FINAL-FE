@@ -1,3 +1,3 @@
 export default function Main() {
-  return <>main</>;
+  return <div>질문글</div>;
 }
