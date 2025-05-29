@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Question from "@/components/Question";
 import Link from "next/link";
+import fetchQuestionData from "@/lib/fetchQuestionData";
 
 interface Question {
   id: number;
   title: string;
-  author: string;
+  nickname: string;
   created: string;
+  content: string;
   answerCount: number;
 }
 
@@ -18,40 +20,26 @@ export default function Main() {
     "latest"
   );
   const [currentPage, setCurrentPage] = useState(1);
+  const [questionList, setQuestionList] = useState<Question[]>(
+    []
+  );
   const itemsPerPage = 5;
 
-  const questions = [
-    {
-      id: 5,
-      title: "제목",
-      nickname: "홍길동",
-      created: "2025-05-21T15:41:07.559065",
-      content: "내용",
-      answerCount: 0,
-    },
-    {
-      id: 2,
-      title: "Spring Boot란 무엇인가요?",
-      nickname: "yunji",
-      created: "2025-05-21T09:29:02.169382",
-      content: "Spring Boot로는 무엇을 만들 수 있나요?",
-      answerCount: 0,
-    },
-    {
-      id: 1,
-      title: "수정된 제목",
-      nickname: "yunji",
-      created: "2025-05-21T08:38:38.223655",
-      content: "수정된 내용",
-      answerCount: 1,
-    },
-  ].map((q) => ({
-    ...q,
-    created: q.created.split("T")[0],
-  }));
+  useEffect(() => {
+    const fetchData = async () => {
+      let data = await fetchQuestionData();
+      data = data.map((q: Question) => ({
+        // 날짜 형식 변경
+        ...q,
+        created: q.created.split("T")[0],
+      }));
+      setQuestionList(data);
+    };
+    fetchData();
+  }, []);
 
   // 검색어에 따라 필터링 및 정렬
-  const filtered = questions
+  const filtered = questionList
     .filter((q) => q.title.includes(search)) // 제목에 검색어 포함 여부 확인
     .sort(
       (a, b) =>
