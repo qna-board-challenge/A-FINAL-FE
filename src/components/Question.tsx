@@ -1,30 +1,34 @@
 "use client";
 
-import axios from "axios";
-import { useEffect } from "react";
+import Link from "next/link";
 
-export default function Question() {
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:8080/api/questions"
-      );
-      console.log("응답 데이터", response);
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+interface Question {
+  id: number;
+  title: string;
+  author: string;
+  createdAt: string;
+  commentCount: number;
+}
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+export default function Question({
+  id,
+  title,
+  author,
+  createdAt,
+  commentCount,
+}: Question) {
   return (
-    <div>
-      <div>글1</div>
-      <div>글2</div>
-      <div>글3</div>
-      <div>글4</div>
-    </div>
+    <li className="flex flex-col p-4 border rounded shadow hover:bg-gray-50">
+      <Link href={`/questions/${id}`}>
+        <h3 className="text-lg font-bold mb-2">{title}</h3>
+        <div className="flex gap-2 text-sm text-gray-600">
+          <span>{author}</span>
+          <span>{createdAt}</span>
+          <span className="flex-1 text-right">
+            댓글 {commentCount}
+          </span>
+        </div>
+      </Link>
+    </li>
   );
 }
