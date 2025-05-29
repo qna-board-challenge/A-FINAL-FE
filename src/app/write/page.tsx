@@ -27,7 +27,7 @@ export default function Write() {
   useEffect(() => {
     if (id) {
       axios
-        .get(`/api/questions/${id}`)
+        .get(`http://3.27.167.79:8080/api/questions/${id}`)
         .then((res) => {
           const { title, nickname, content } = res.data;
           setForm({
@@ -51,17 +51,24 @@ export default function Write() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("전송 데이터:", form);
+
     try {
       if (id) {
-        await axios.put(`/api/questions/${id}`, form);
+        await axios.put(`http://3.27.167.79:8080/api/questions/${id}`, form);
         alert("수정 완료!");
       } else {
-        await axios.post("/api/questions", form);
+        await axios.post("http://3.27.167.79:8080/api/questions", form);
         alert("작성 완료!");
       }
       router.push("/");
     } catch (err: any) {
-      alert(err.response?.data?.message || "오류 발생");
+      const errorMessage =
+        err.response?.data?.message ||
+        (id
+          ? "수정에 실패하였습니다. 다시 시도해주세요."
+          : "작성에 실패하였습니다. 다시 시도해주세요.");
+      alert(errorMessage);
     }
   };
 
