@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const fetchQuestionData = async () => {
+const fetchQuestionApi = async () => {
   try {
     const response = await axios.get(
       "http://3.27.167.79:8080/api/questions"
@@ -12,4 +12,4 @@ const fetchQuestionData = async () => {
   }
 };
 
-export default fetchQuestionData;
+export default fetchQuestionApi;

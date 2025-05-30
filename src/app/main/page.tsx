@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Question from "@/components/Question";
 import Link from "next/link";
-import fetchQuestionData from "@/lib/fetchQuestionData";
+import fetchQuestionApi from "@/lib/fetchQuestionApi";
 
 interface Question {
   id: number;
@@ -27,7 +27,7 @@ export default function Main() {
 
   useEffect(() => {
     const fetchData = async () => {
-      let data = await fetchQuestionData();
+      let data = await fetchQuestionApi();
       data = data.map((q: Question) => ({
         // 날짜 형식 변경
         ...q,
