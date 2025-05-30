@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import QuestionDetail from "../components/QuestionDetail";
+import CommentList from "../components/commnet/CommentList";
 import axios from "axios";
 
 export default function DetailPage() {
@@ -58,6 +59,7 @@ export default function DetailPage() {
         }}
         questionId={question.id.toString()}
       />
+      <CommentList questionId={question.id.toString()} />
     </main>
   );
 }
