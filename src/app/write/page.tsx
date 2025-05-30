@@ -26,6 +26,7 @@ export default function Write() {
 
   useEffect(() => {
     if (id) {
+      // 수정 모드 → 데이터 불러오기
       axios
         .get(`http://3.27.167.79:8080/api/questions/${id}`)
         .then((res) => {
@@ -40,6 +41,14 @@ export default function Write() {
         .catch(() => {
           alert("기존 글 정보를 불러오지 못했습니다.");
         });
+    } else {
+      //수정 상태에서 사이드바 작성 질문 등록으로 넘어가면 form 초기화 추가
+      setForm({
+        title: "",
+        nickname: "",
+        password: "",
+        content: "",
+      });
     }
   }, [id]);
 
@@ -55,19 +64,17 @@ export default function Write() {
 
     try {
       if (id) {
-        await axios.put(
-          `http://3.27.167.79:8080/api/questions/${id}`,
-          form
-        );
+        await axios.put(`http://3.27.167.79:8080/api/questions/${id}`, form);
         alert("수정 완료!");
+        router.push(`/detail/${id}`); // 수정 → 해당 글로 이동
       } else {
-        await axios.post(
+        const response = await axios.post(
           "http://3.27.167.79:8080/api/questions",
           form
         );
         alert("작성 완료!");
+        router.push(`/main`); // 작성 → 메인 목록으로 이동
       }
-      router.push("/main");
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.message ||
@@ -144,7 +151,13 @@ export default function Write() {
               </button>
               <button
                 type="button"
-                onClick={() => router.push("/main")}
+                onClick={() => {
+                  if (id) {
+                    router.push(`/detail/${id}`);
+                  } else {
+                    router.push("/main");
+                  }
+                }}
                 className="px-5 py-3 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 h-full"
               >
                 CANCEL
