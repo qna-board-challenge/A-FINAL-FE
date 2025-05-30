@@ -36,13 +36,17 @@ export default function Main() {
 
   useEffect(() => {
     const fetchData = async () => {
-      let data = await fetchQuestionApi();
-      data = data.map((q: Question) => ({
-        // 날짜 형식 변경
-        ...q,
-        created: q.created.split("T")[0],
-      }));
-      setQuestionList(data);
+      const data = await fetchQuestionApi();
+
+      // data가 null일 경우 대비해 타입 좁히기
+      if (data) {
+        const formattedData = data.map((q: Question) => ({
+          // 날짜 형식 변경
+          ...q,
+          created: q.created.split("T")[0],
+        }));
+        setQuestionList(formattedData);
+      }
     };
     fetchData();
   }, []);
