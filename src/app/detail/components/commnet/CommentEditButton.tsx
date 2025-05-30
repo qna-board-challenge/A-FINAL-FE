@@ -38,7 +38,7 @@ export default function CommentEditButton({
   return (
     <>
       <button
-        className="px-3 py-1 text-xs bg-sky-200 text-black rounded hover:bg-sky-400"
+        className="px-3 py-1 mr-2 text-xs bg-gray-200 text-black rounded hover:bg-gray-600 hover:text-white"
         onClick={onEdit}
       >
         수정

@@ -68,12 +68,9 @@ export default function Write() {
         alert("수정 완료!");
         router.push(`/detail/${id}`); // 수정 → 해당 글로 이동
       } else {
-        const response = await axios.post(
-          "http://3.27.167.79:8080/api/questions",
-          form
-        );
+        await axios.post("http://3.27.167.79:8080/api/questions", form);
         alert("작성 완료!");
-        router.push(`/main`); // 작성 → 메인 목록으로 이동
+        router.push("/main"); // 작성 → 메인 목록으로 이동
       }
     } catch (err: any) {
       const errorMessage =
@@ -86,7 +83,7 @@ export default function Write() {
   };
 
   return (
-    <main className="min-h-screen p-10 w-full max-w-2xl mx-auto bg-white mt-10">
+    <main className="min-h-screen p-10 w-full max-w-2xl mx-auto bg-white">
       <h1 className="text-3xl font-semibold mb-8">
         {id ? "Edit Your Question" : "Ask a Question"}
       </h1>
@@ -145,7 +142,7 @@ export default function Write() {
             <div className="flex gap-2">
               <button
                 type="submit"
-                className="px-5 py-3 bg-sky-300 text-white rounded hover:bg-sky-500 h-full"
+                className="px-5 py-3 bg-sky-300 text-black rounded hover:bg-sky-500 h-full"
               >
                 {id ? "UPDATE" : "POST"}
               </button>
