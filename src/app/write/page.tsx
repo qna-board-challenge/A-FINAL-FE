@@ -55,13 +55,19 @@ export default function Write() {
 
     try {
       if (id) {
-        await axios.put(`http://3.27.167.79:8080/api/questions/${id}`, form);
+        await axios.put(
+          `http://3.27.167.79:8080/api/questions/${id}`,
+          form
+        );
         alert("수정 완료!");
       } else {
-        await axios.post("http://3.27.167.79:8080/api/questions", form);
+        await axios.post(
+          "http://3.27.167.79:8080/api/questions",
+          form
+        );
         alert("작성 완료!");
       }
-      router.push("/");
+      router.push("/main");
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.message ||
@@ -138,7 +144,7 @@ export default function Write() {
               </button>
               <button
                 type="button"
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/main")}
                 className="px-5 py-3 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 h-full"
               >
                 CANCEL

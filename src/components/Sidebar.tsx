@@ -11,17 +11,8 @@ export default function SideBar() {
           </Link>
         </li>
         <li>
-          <Link href="" className="block hover:underline">
+          <Link href="/write" className="block hover:underline">
             질문 등록
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/mypage"
-            className="block hover:underline"
-            onClick={() => alert("마이페이지")}
-          >
-            마이페이지
           </Link>
         </li>
       </ul>

@@ -114,7 +114,7 @@ export default function Main() {
           </button>
         </div>
         <Link
-          href="/ask"
+          href="/write"
           className="h-1/2 px-4 py-2 border hover:bg-gray-600 hover:text-white rounded"
         >
           글쓰기
