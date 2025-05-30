@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Question from "@/components/Question";
 import Link from "next/link";
 import fetchQuestionApi from "@/lib/fetchQuestionApi";
+import fetchSearchApi from "@/lib/fetchSearchApi";
 
 interface Question {
   id: number;
@@ -24,6 +25,14 @@ export default function Main() {
     []
   );
   const itemsPerPage = 5;
+
+  useEffect(() => {
+    const fecthData = async () => {
+      const searchResult = await fetchSearchApi("제목");
+      console.log("search", searchResult);
+    };
+    fecthData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

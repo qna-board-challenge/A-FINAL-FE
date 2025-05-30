@@ -9,14 +9,20 @@ interface Question {
   answerCount: number;
 }
 
-const fetchQuestionApi = async (): Promise<
-  Question[] | null
-> => {
+const fetchSearchApi = async (
+  title: string
+): Promise<Question[] | null> => {
   try {
     const response = await axios.get(
-      "http://3.27.167.79:8080/api/questions"
+      "http://3.27.167.79:8080/api/questions",
+      {
+        params: {
+          keyword: title,
+        },
+      }
     );
     const data: Question[] = response.data;
+    // console.log(data);
     return data;
   } catch (error) {
     console.error("error", error);
@@ -24,4 +30,4 @@ const fetchQuestionApi = async (): Promise<
   }
 };
 
-export default fetchQuestionApi;
+export default fetchSearchApi;
