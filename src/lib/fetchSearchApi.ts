@@ -22,7 +22,6 @@ const fetchSearchApi = async (
       }
     );
     const data: Question[] = response.data;
-    // console.log(data);
     return data;
   } catch (error) {
     console.error("error", error);

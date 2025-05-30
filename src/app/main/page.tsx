@@ -26,17 +26,10 @@ export default function Main() {
   );
   const itemsPerPage = 5;
 
-  useEffect(() => {
-    const fecthData = async () => {
-      const searchResult = await fetchSearchApi("제목");
-      console.log("search", searchResult);
-    };
-    fecthData();
-  }, []);
-
+  // Question 데이터 불러오기
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchQuestionApi();
+      const data: Question[] | null = await fetchQuestionApi();
 
       // data가 null일 경우 대비해 타입 좁히기
       if (data) {
@@ -51,15 +44,37 @@ export default function Main() {
     fetchData();
   }, []);
 
+  // 제목 검색 api
+  const handleSearch = async () => {
+    const searchResult: Question[] | null = await fetchSearchApi(
+      search
+    ); // 검색어를 API에 전달
+    if (searchResult) {
+      const formattedData = searchResult.map((q: Question) => ({
+        ...q,
+        created: q.created.split("T")[0], // 날짜 형식 변경
+      }));
+      setQuestionList(formattedData); // 검색 결과를 상태로 업데이트
+      setCurrentPage(1); // 검색 시 1페이지로 초기화
+    }
+  };
+
+  // 엔터 입력 시 검색되게 함
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   // 검색어에 따라 필터링 및 정렬
-  const filtered = questionList
-    .filter((q) => q.title.includes(search)) // 제목에 검색어 포함 여부 확인
-    .sort(
-      (a, b) =>
-        sortBy === "latest"
-          ? b.created.localeCompare(a.created) // 최신순으로 정렬
-          : b.answerCount - a.answerCount // 댓글순으로 정렬
-    );
+  const filtered = questionList.sort(
+    (a, b) =>
+      sortBy === "latest"
+        ? b.created.localeCompare(a.created) // 최신순으로 정렬하기
+        : b.answerCount - a.answerCount // 댓글순으로 정렬하기
+  );
 
   // 총 페이지 수 계산
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
@@ -79,20 +94,28 @@ export default function Main() {
 
   return (
     <div className="max-w-[80%] mx-auto">
-      <div className="flex justify-between mb-4">
-        <input
-          type="text"
-          placeholder="제목 검색"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setCurrentPage(1); // 검색 시 1페이지로 초기화
-          }}
-          className="border p-2 rounded w-1/2"
-        />
+      <div className="flex justify-between items-center">
+        <div className="flex gap-4 py-2 pb-5 rounded w-1/2">
+          <input
+            type="text"
+            placeholder="제목 검색"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+            onKeyDown={handleKeyDown}
+            className="border p-2 rounded w-1/2"
+          />
+          <button
+            className="border px-3 rounded text-lg hover:bg-gray-600 hover:text-white"
+            onClick={handleSearch}
+          >
+            검색
+          </button>
+        </div>
         <Link
           href="/ask"
-          className="px-4 py-2 bg-gray-600 text-white rounded"
+          className="h-1/2 px-4 py-2 border hover:bg-gray-600 hover:text-white rounded"
         >
           글쓰기
         </Link>
