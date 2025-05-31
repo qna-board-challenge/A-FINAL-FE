@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import axios from "axios";
 import React from "react";
@@ -64,11 +64,17 @@ export default function Write() {
 
     try {
       if (id) {
-        await axios.put(`http://3.27.167.79:8080/api/questions/${id}`, form);
+        await axios.put(
+          `http://3.27.167.79:8080/api/questions/${id}`,
+          form
+        );
         alert("수정 완료!");
         router.push(`/detail/${id}`); // 수정 → 해당 글로 이동
       } else {
-        await axios.post("http://3.27.167.79:8080/api/questions", form);
+        await axios.post(
+          "http://3.27.167.79:8080/api/questions",
+          form
+        );
         alert("작성 완료!");
         router.push("/main"); // 작성 → 메인 목록으로 이동
       }
@@ -89,86 +95,88 @@ export default function Write() {
   };
 
   return (
-    <main className="min-h-screen p-10 w-full max-w-2xl mx-auto bg-white">
-      <h1 className="text-3xl font-semibold mb-8">
-        {id ? "Edit Your Question" : "Ask a Question"}
-      </h1>
+    <Suspense fallback={<p>로딩 중...</p>}>
+      <main className="min-h-screen p-10 w-full max-w-2xl mx-auto bg-white">
+        <h1 className="text-3xl font-semibold mb-8">
+          {id ? "Edit Your Question" : "Ask a Question"}
+        </h1>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <input
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          placeholder="제목을 작성하세요."
-          className="w-full border-b border-gray-400 px-4 py-3 focus:outline-none"
-          required
-        />
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <input
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            placeholder="제목을 작성하세요."
+            className="w-full border-b border-gray-400 px-4 py-3 focus:outline-none"
+            required
+          />
 
-        <textarea
-          name="content"
-          value={form.content}
-          onChange={handleChange}
-          placeholder="내용을 입력하세요."
-          rows={10}
-          className="w-full border border-gray-400 px-4 py-3 rounded-md resize-none focus:outline-none"
-          required
-        />
+          <textarea
+            name="content"
+            value={form.content}
+            onChange={handleChange}
+            placeholder="내용을 입력하세요."
+            rows={10}
+            className="w-full border border-gray-400 px-4 py-3 rounded-md resize-none focus:outline-none"
+            required
+          />
 
-        <div className="space-y-3">
-          {!id ? (
-            <input
-              name="nickname"
-              value={form.nickname}
-              onChange={handleChange}
-              placeholder="닉네임"
-              className="block w-1/3 border border-gray-400 px-4 py-3 rounded-md focus:outline-none"
-              required
-            />
-          ) : (
-            <input
-              name="nickname"
-              value={form.nickname}
-              readOnly
-              className="block w-1/3 border border-gray-300 px-4 py-3 rounded-md bg-gray-100 text-gray-500 focus:outline-none"
-            />
-          )}
+          <div className="space-y-3">
+            {!id ? (
+              <input
+                name="nickname"
+                value={form.nickname}
+                onChange={handleChange}
+                placeholder="닉네임"
+                className="block w-1/3 border border-gray-400 px-4 py-3 rounded-md focus:outline-none"
+                required
+              />
+            ) : (
+              <input
+                name="nickname"
+                value={form.nickname}
+                readOnly
+                className="block w-1/3 border border-gray-300 px-4 py-3 rounded-md bg-gray-100 text-gray-500 focus:outline-none"
+              />
+            )}
 
-          {/* password + button 한 줄 정렬을 위해 한번 더 감싸줌 */}
-          <div className="flex items-center justify-between w-full gap-4">
-            <input
-              name="password"
-              type="password"
-              value={form.password}
-              onChange={handleChange}
-              placeholder="비밀번호"
-              className="w-1/3 border border-gray-400 px-4 py-3 rounded-md focus:outline-none"
-              required
-            />
+            {/* password + button 한 줄 정렬을 위해 한번 더 감싸줌 */}
+            <div className="flex items-center justify-between w-full gap-4">
+              <input
+                name="password"
+                type="password"
+                value={form.password}
+                onChange={handleChange}
+                placeholder="비밀번호"
+                className="w-1/3 border border-gray-400 px-4 py-3 rounded-md focus:outline-none"
+                required
+              />
 
-            <div className="flex gap-2">
-              <button
-                type="submit"
-                className="px-5 py-3 bg-sky-300 text-black rounded hover:bg-sky-500 h-full"
-              >
-                {id ? "UPDATE" : "POST"}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  if (id) {
-                    router.push(`/detail/${id}`);
-                  } else {
-                    router.push("/main");
-                  }
-                }}
-                className="px-5 py-3 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 h-full"
-              >
-                CANCEL
-              </button>
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  className="px-5 py-3 bg-sky-300 text-black rounded hover:bg-sky-500 h-full"
+                >
+                  {id ? "UPDATE" : "POST"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (id) {
+                      router.push(`/detail/${id}`);
+                    } else {
+                      router.push("/main");
+                    }
+                  }}
+                  className="px-5 py-3 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 h-full"
+                >
+                  CANCEL
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </form>
-    </main>
+        </form>
+      </main>
+    </Suspense>
   );
 }
