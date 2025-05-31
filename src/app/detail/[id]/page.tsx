@@ -6,10 +6,27 @@ import QuestionDetail from "../components/QuestionDetail";
 import CommentList from "../components/comment/CommentList";
 import axios from "axios";
 
+type Question = {
+  id: number;
+  title: string;
+  content: string;
+  nickname: string;
+  createdAt: string;
+  updatedAt: string | null;
+};
+
+type Comment = {
+  id: number;
+  content: string;
+  nickname: string;
+  created: string;
+  updated?: string;
+};
+
 export default function DetailPage() {
   const { id } = useParams();
-  const [question, setQuestion] = useState<any>(null);
-  const [comments, setComments] = useState([]);
+  const [question, setQuestion] = useState<Question | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
 
   const fetchQuestionDetail = () => {
     axios
@@ -33,11 +50,17 @@ export default function DetailPage() {
           id: qid,
         });
       })
-      .catch((err) => {
-        const errorMessage =
-          err.response?.data?.message || "질문을 불러오는 데 실패했습니다.";
-        alert(errorMessage);
+      .catch((err: unknown) => {
         console.error(err);
+        if (axios.isAxiosError(err)) {
+          const errorMessage =
+            err.response?.data?.message || "질문을 불러오는 데 실패했습니다.";
+          alert(errorMessage);
+        } else if (err instanceof Error) {
+          alert(err.message);
+        } else {
+          alert("알 수 없는 에러가 발생했습니다.");
+        }
       });
   };
 
@@ -45,7 +68,7 @@ export default function DetailPage() {
     axios
       .get(`http://3.27.167.79:8080/api/questions/${id}/comments`)
       .then((res) => {
-        const data = res.data.map((c: any) => ({
+        const data: Comment[] = res.data.map((c: Comment) => ({
           ...c,
           created: c.created.slice(0, 10),
           updated: c.updated?.slice(0, 10),
@@ -77,7 +100,7 @@ export default function DetailPage() {
           content: question.content,
           nickname: question.nickname,
           createdAt: question.createdAt,
-          updatedAt: question.updatedAt,
+          updatedAt: question.updatedAt ?? "", // null이면 빈 문자열로 대체
         }}
         questionId={question.id.toString()}
       />

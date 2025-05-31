@@ -58,13 +58,19 @@ export default function CommentModal({
         onSubmitSuccess();
         onClose();
       }
-    } catch (err: any) {
-      const errorMessage =
-        err.response?.data?.message ||
-        (mode === "edit"
-          ? "수정에 실패하였습니다. 다시 시도해주세요."
-          : "등록에 실패하였습니다. 다시 시도해주세요.");
-      alert(errorMessage);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        const errorMessage =
+          err.response?.data?.message ||
+          (mode === "edit"
+            ? "수정에 실패하였습니다. 다시 시도해주세요."
+            : "등록에 실패하였습니다. 다시 시도해주세요.");
+        alert(errorMessage);
+      } else if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("알 수 없는 에러가 발생했습니다.");
+      }
     }
   };
 
