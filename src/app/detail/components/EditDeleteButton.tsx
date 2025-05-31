@@ -18,7 +18,7 @@ export default function EditDeleteButton({
       )
       .then(() => {
         alert("삭제 완료!");
-        router.push("/");
+        router.push("/main");
       })
       .catch((err) => {
         const errorMessage =
