@@ -20,12 +20,18 @@ export default function EditDeleteButton({
         alert("삭제 완료!");
         router.push("/main");
       })
-      .catch((err) => {
-        const errorMessage =
-          err.response?.data?.message ||
-          "삭제에 실패했습니다. 다시 시도해주세요.";
-        alert(errorMessage);
+      .catch((err: unknown) => {
         console.error(err);
+        if (axios.isAxiosError(err)) {
+          const errorMessage =
+            err.response?.data?.message ||
+            "삭제에 실패했습니다. 다시 시도해주세요.";
+          alert(errorMessage);
+        } else if (err instanceof Error) {
+          alert(err.message);
+        } else {
+          alert("알 수 없는 에러가 발생했습니다.");
+        }
       });
   };
 
