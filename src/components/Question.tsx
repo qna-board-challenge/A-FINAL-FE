@@ -16,7 +16,6 @@ export default function Question({
   title,
   nickname,
   created,
-  content,
   answerCount,
 }: Question) {
   return (
