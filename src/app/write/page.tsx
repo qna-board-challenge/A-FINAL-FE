@@ -72,13 +72,19 @@ export default function Write() {
         alert("작성 완료!");
         router.push("/main"); // 작성 → 메인 목록으로 이동
       }
-    } catch (err: any) {
-      const errorMessage =
-        err.response?.data?.message ||
-        (id
-          ? "수정에 실패하였습니다. 다시 시도해주세요."
-          : "작성에 실패하였습니다. 다시 시도해주세요.");
-      alert(errorMessage);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        const errorMessage =
+          err.response?.data?.message ||
+          (id
+            ? "수정에 실패하였습니다. 다시 시도해주세요."
+            : "작성에 실패하였습니다. 다시 시도해주세요.");
+        alert(errorMessage);
+      } else if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("알 수 없는 에러가 발생했습니다.");
+      }
     }
   };
 
