@@ -18,7 +18,7 @@ export default function EditDeleteButton({
       )
       .then(() => {
         alert("삭제 완료!");
-        router.push("/");
+        router.push("/main");
       })
       .catch((err) => {
         const errorMessage =
@@ -32,13 +32,13 @@ export default function EditDeleteButton({
   return (
     <>
       <button
-        className="px-4 py-1 text-sm bg-sky-300 text-black rounded hover:bg-sky-500"
+        className="px-4 py-1 text-sm bg-gray-200 text-black rounded hover:bg-gray-600 hover:text-white"
         onClick={() => router.push(`/write?id=${questionId}`)}
       >
         수정
       </button>
       <button
-        className="px-4 py-1 text-sm bg-red-300 text-black rounded hover:bg-red-500"
+        className="px-4 py-1 text-sm bg-red-300 text-black rounded hover:bg-red-500 "
         onClick={() => setShowModal(true)}
       >
         삭제

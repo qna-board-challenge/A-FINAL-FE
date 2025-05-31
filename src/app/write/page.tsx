@@ -26,6 +26,7 @@ export default function Write() {
 
   useEffect(() => {
     if (id) {
+      // 수정 모드 → 데이터 불러오기
       axios
         .get(`http://3.27.167.79:8080/api/questions/${id}`)
         .then((res) => {
@@ -40,6 +41,14 @@ export default function Write() {
         .catch(() => {
           alert("기존 글 정보를 불러오지 못했습니다.");
         });
+    } else {
+      //수정 상태에서 사이드바 작성 질문 등록으로 넘어가면 form 초기화 추가
+      setForm({
+        title: "",
+        nickname: "",
+        password: "",
+        content: "",
+      });
     }
   }, [id]);
 
@@ -57,11 +66,12 @@ export default function Write() {
       if (id) {
         await axios.put(`http://3.27.167.79:8080/api/questions/${id}`, form);
         alert("수정 완료!");
+        router.push(`/detail/${id}`); // 수정 → 해당 글로 이동
       } else {
         await axios.post("http://3.27.167.79:8080/api/questions", form);
         alert("작성 완료!");
+        router.push("/main"); // 작성 → 메인 목록으로 이동
       }
-      router.push("/");
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.message ||
@@ -73,7 +83,7 @@ export default function Write() {
   };
 
   return (
-    <main className="min-h-screen p-10 w-full max-w-2xl mx-auto bg-white mt-10">
+    <main className="min-h-screen p-10 w-full max-w-2xl mx-auto bg-white">
       <h1 className="text-3xl font-semibold mb-8">
         {id ? "Edit Your Question" : "Ask a Question"}
       </h1>
@@ -132,13 +142,19 @@ export default function Write() {
             <div className="flex gap-2">
               <button
                 type="submit"
-                className="px-5 py-3 bg-sky-300 text-white rounded hover:bg-sky-500 h-full"
+                className="px-5 py-3 bg-sky-300 text-black rounded hover:bg-sky-500 h-full"
               >
                 {id ? "UPDATE" : "POST"}
               </button>
               <button
                 type="button"
-                onClick={() => router.push("/")}
+                onClick={() => {
+                  if (id) {
+                    router.push(`/detail/${id}`);
+                  } else {
+                    router.push("/main");
+                  }
+                }}
                 className="px-5 py-3 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 h-full"
               >
                 CANCEL
