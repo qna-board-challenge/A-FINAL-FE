@@ -14,7 +14,7 @@ const fetchQuestionApi = async (): Promise<
 > => {
   try {
     const response = await axios.get(
-      "https://3.27.167.79:8080/api/questions"
+      "http://3.27.167.79:8080/api/questions"
     );
     const data: Question[] = response.data;
     return data;

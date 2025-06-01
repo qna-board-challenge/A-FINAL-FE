@@ -14,7 +14,7 @@ const fetchSearchApi = async (
 ): Promise<Question[] | null> => {
   try {
     const response = await axios.get(
-      "https://3.27.167.79:8080/api/questions",
+      "http://3.27.167.79:8080/api/questions",
       {
         params: {
           keyword: title,
